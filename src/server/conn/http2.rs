@@ -252,6 +252,19 @@ impl<E> Builder<E> {
         self
     }
 
+    /// Set an optional encoded DATA batch target per connection, in bytes.
+    ///
+    /// `None` disables DATA-copy aggregation. Other carried fixes still apply.
+    /// Values must fit two 16 KiB DATA frames
+    /// including headers (32786 bytes) and be at most `isize::MAX`. Invalid input
+    /// returns before changing this builder. Allocation is lazy; larger frames,
+    /// headers, stream buffers and flush ownership retain their existing paths.
+    pub fn write_batch_size(&mut self, bytes: Option<usize>) -> std::io::Result<&mut Self> {
+        let size = bytes.map(h2::WriteBatchSize::new).transpose()?;
+        self.h2_builder.write_batch_size = size;
+        Ok(self)
+    }
+
     /// Enables the [extended CONNECT protocol].
     ///
     /// [extended CONNECT protocol]: https://datatracker.ietf.org/doc/html/rfc8441#section-4
@@ -322,3 +335,7 @@ impl<E> Builder<E> {
         Connection { conn: proto }
     }
 }
+
+#[cfg(test)]
+#[path = "../../tests/write_batch_size.rs"]
+mod write_batch_tests;
