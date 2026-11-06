@@ -1,11 +1,11 @@
 [package]
-name = "hyper"
+name = "hyper-edge"
 version = "1.12.0"
 description = "A protective and efficient HTTP library for all."
 readme = "README.md"
 homepage = "https://hyper.rs"
 documentation = "https://docs.rs/hyper"
-repository = "https://github.com/hyperium/hyper"
+repository = "https://github.com/AzulEterno/hyper-edge"
 license = "MIT"
 authors = ["Sean McArthur <sean@seanmonstar.com>"]
 keywords = ["http", "hyper", "hyperium"]
@@ -16,8 +16,14 @@ rust-version = "1.63" # keep in sync with MSRV.md dev doc
 include = [
   "Cargo.toml",
   "LICENSE",
+  "NOTES.md",
   "src/**/*",
 ]
+
+[lib]
+name = "hyper"
+
+[workspace]
 
 [dependencies]
 bytes = "1.2"
@@ -31,7 +37,7 @@ atomic-waker = { version = "1.1.2", optional = true }
 futures-channel = { version = "0.3", optional = true }
 futures-core = { version = "0.3.31", optional = true }
 futures-util = { version = "0.3", default-features = false, features = ["alloc"], optional = true }
-h2 = { version = "0.4.14", optional = true }
+h2 = { package = "hyper-h2-edge", path = "../hyper-h2-edge", version = "0.4.20", optional = true }
 http-body-util = { version = "0.1", optional = true }
 httparse = { version = "1.9", optional = true }
 httpdate = { version = "1.0", optional = true }
